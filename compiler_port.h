@@ -30,9 +30,13 @@
 #define _COMPILER_PORT_H
 
 //Dependencies
-#include <stddef.h>
-#include <stdint.h>
-#include <inttypes.h>
+#if defined(__KERNEL__)
+   #include <linux/time.h>
+#elif
+   #include <stddef.h>
+   #include <stdint.h>
+   #include <inttypes.h>
+#endif
 
 //ARM compiler V6?
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
@@ -111,6 +115,13 @@ typedef unsigned int uint_t;
    #define PRIuSIZE "u"
    #define PRIXSIZE "X"
    #define PRIuTIME "lu"
+//Linux kernel compiler
+#elif defined(__KERNEL__)
+   typedef time64_t time_t;
+
+   #define PRIu8 "u"
+   #define PRIu16 "u"
+   #define PRIu32 "u"
 //Linux/FreeBSD GCC compiler
 #elif defined(__linux__) || defined(__FreeBSD__)
    #define PRIuSIZE "zu"

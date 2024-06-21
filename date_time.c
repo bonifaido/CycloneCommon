@@ -27,8 +27,12 @@
  **/
 
 //Dependencies
-#include <stdio.h>
-#include <string.h>
+#if defined(__KERNEL__)
+   #include <linux/ktime.h>
+#else
+   #include <stdio.h>
+   #include <string.h>
+#endif
 #include "date_time.h"
 
 #if defined(_WIN32)
@@ -183,8 +187,7 @@ __weak_func time_t getCurrentUnixTime(void)
    //Retrieve current time
    return time(NULL);
 #else
-   //Not implemented
-   return 0;
+   return ktime_get_real_seconds();
 #endif
 }
 
